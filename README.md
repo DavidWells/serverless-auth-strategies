@@ -9,13 +9,13 @@ The code in this repo covers primarily AWS lambda functions but these strategies
 <!-- AUTO-GENERATED-CONTENT:START (TOC) -->
 - [Pick your auth provider](#pick-your-auth-provider)
 - [Choose a strategy](#choose-a-strategy)
-  * [Inline auth checking](#inline-auth-checking)
-  * [Middleware](#middleware)
-  * ["Legacy" middleware](#legacy-middleware)
-  * [Auth decorators](#auth-decorators)
-  * [Custom authorizers](#custom-authorizers)
-  * [Proxy level](#proxy-level)
-  * [Single use access token](#single-use-access-token)
+  * [1. Inline auth checking](#1-inline-auth-checking)
+  * [2. Middleware](#2-middleware)
+  * [3. "Legacy" middleware](#3-legacy-middleware)
+  * [4. Auth decorators](#4-auth-decorators)
+  * [5. Custom authorizers](#5-custom-authorizers)
+  * [6. Proxy level](#6-proxy-level)
+  * [7. Single use access token](#7-single-use-access-token)
 <!-- AUTO-GENERATED-CONTENT:END -->
 
 ## Pick your auth provider
@@ -35,7 +35,7 @@ Some options out there include:
 
 There are many ways to protect for your functions. The list below will walk through them and the pros/cons of each.
 
-### Inline auth checking
+### 1. Inline auth checking
 
 Inlined function authentication happens inside your function code
 
@@ -78,7 +78,7 @@ exports.handler = (event, context, callback) => {
 - this authentication method is hard to share across multiple functions as your API grows and can lead to non DRY code
 - Caching can be a challenge and if your authentication is an expensive operation or takes a while this can result in a slower UX and cost you more in compute time.
 
-### Middleware
+### 2. Middleware
 
 Next up we have the middleware approach to authentication. This is still happening at the code level but now your logic that verifies the user is allowed to access the function is abstracted up a level into reusable middleware.
 
@@ -133,7 +133,7 @@ module.exports = function authMiddleware(config) {
 
 You can also instrument this yourself as seen in the movie demo(link here)
 
-### "Legacy" middleware
+### 3. "Legacy" middleware
 
 This middleware approach is using a familiar web framework with express PR flask and using their an auth module from their ecosystem.
 
@@ -190,7 +190,7 @@ exports.handler = serverless(app)
 * This will cost more over time with additional ms runtime because of express overhead
 * This introduces the idea that monoliths can work in lambda functions and this is considered an anti pattern
 
-### Auth decorators
+### 4. Auth decorators
 
 Similar to auth middleware, decorators wrap the function code and return another function
 
@@ -203,7 +203,7 @@ function protectedFunction(event, context, callback) {
 }
 ```
 
-### Custom authorizers
+### 5. Custom authorizers
 
 Custom authorizers are a feature from AWS API gateway.
 
@@ -217,7 +217,7 @@ They are essentially another function that checks if the user is authorized to a
 
 - you need to be using AWS API gateway to use custom authorizers
 
-### Proxy level
+### 6. Proxy level
 
 Similar to custom authorizers, you can verify requests at the proxy level.
 
@@ -235,7 +235,7 @@ If the cookie is no valid, you can send the request to a non authorized endpoint
 /.netlify/functions/protected-function /not-allowed 401!
 ```
 
-### Single use access token
+### 7. Single use access token
 
 Some third party services like AWS, and faunaDB make it possible to use single use tokens in the client to invoke their APIs directly.
 
