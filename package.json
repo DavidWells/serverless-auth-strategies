@@ -1,0 +1,22 @@
+{
+  "name": "serverless-auth-strategies",
+  "version": "1.0.0",
+  "description": "How do we keep certain functions protected & scoped down to specific users (i.e. admin/paid users)?",
+  "main": "index.js",
+  "devDependencies": {
+    "markdown-magic": "^0.1.25"
+  },
+  "scripts": {
+    "docs": "md-magic --path '**/*.md' --ignore 'node_modules'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidWells/serverless-auth-strategies.git"
+  },
+  "author": "David Wells",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DavidWells/serverless-auth-strategies/issues"
+  },
+  "homepage": "https://github.com/DavidWells/serverless-auth-strategies#readme"
+}

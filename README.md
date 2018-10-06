@@ -6,13 +6,34 @@ This will walk through the different strategies available for authorizing access
 
 The code in this repo covers primarily AWS lambda functions but these strategies can apply to any FAAS provider.
 
+<!-- AUTO-GENERATED-CONTENT:START (TOC) -->
+- [Pick your auth provider](#pick-your-auth-provider)
+- [Choose a strategy](#choose-a-strategy)
+  * [Inline auth checking](#inline-auth-checking)
+  * [Middleware](#middleware)
+  * ["Legacy" middleware](#legacy-middleware)
+  * [Auth decorators](#auth-decorators)
+  * [Custom authorizers](#custom-authorizers)
+  * [Proxy level](#proxy-level)
+  * [Single use access token](#single-use-access-token)
+<!-- AUTO-GENERATED-CONTENT:END -->
+
 ## Pick your auth provider
+
+There are a boatload of services that provide out of the box auth for your app. It's recommended to use one of these mainly because it's quite easy to mess up some piece of the security chain rolling your own auth.
+
+Some options out there include:
 
 - [Auth0]('./auth0')
 - [Netlify](./netlify)
-- [add yours](issues)
+- [AWS Cognito](https://docs.amazonaws.cn/en_us/cognito/latest/developerguide/what-is-amazon-cognito.html)
+- [Okta](https://www.okta.com)
+- [Firebase](https://firebase.google.com/docs/auth/)
+- [... add more](https://github.com/DavidWells/serverless-auth-strategies/issues)
 
-## Strategies
+## Choose a strategy
+
+There are many ways to protect for your functions. The list below will walk through them and the pros/cons of each.
 
 ### Inline auth checking
 
@@ -169,7 +190,7 @@ exports.handler = serverless(app)
 * This will cost more over time with additional ms runtime because of express overhead
 * This introduces the idea that monoliths can work in lambda functions and this is considered an anti pattern
 
-## Auth decorators
+### Auth decorators
 
 Similar to auth middleware, decorators wrap the function code and return another function
 
@@ -182,7 +203,7 @@ function protectedFunction(event, context, callback) {
 }
 ```
 
-## Custom authorizers
+### Custom authorizers
 
 Custom authorizers are a feature from AWS API gateway.
 
@@ -230,4 +251,4 @@ This means no function middleman to make the API calls to other services.
 * More complex to setup
 * Provider must support secure single use access tokens
 
-For more information on this approach see AWS Cognito docs.
+For more information on this approach see [AWS Cognito](https://docs.amazonaws.cn/en_us/cognito/latest/developerguide/authentication-flow.html) docs.
