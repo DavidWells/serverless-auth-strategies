@@ -1,0 +1,33 @@
+# 'service' is the name of the service
+service: protected-endpoints
+
+# 'custom' is a place to define custom variables used elsewhere in the yaml config
+custom:
+  defaultStage: prod
+  currentStage: ${opt:stage, self:custom.defaultStage}
+  currentRegion: ${opt:region, "us-west-2"}
+
+# 'provider' specifies where to deploy the service. Aka deploy to 'aws'
+provider:
+  name: aws
+  runtime: nodejs8.10
+  region: ${self:custom.currentRegion}
+  stage: ${self:custom.currentStage}
+  # 'environment' is where you define any process.env environment variables needed in code
+  environment:
+    AUTH0_DOMAIN: ${file(./config.${self:custom.currentStage}.json):AUTH0_DOMAIN}
+    AUTH0_AUDIENCE: ${file(./config.${self:custom.currentStage}.json):AUTH0_DOMAIN}
+    AUTH0_ISSUER: 'lol'
+
+# 'functions' references all the functions and events in the service
+functions:
+  authFunction:
+    handler: handler.auth
+  protectedFunction:
+    handler: handler.protectedFunction
+    events:
+      - http:
+          path: protected
+          method: post
+          authorizer: authFunction
+          cors: true
