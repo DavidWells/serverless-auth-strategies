@@ -169,13 +169,18 @@ exports.handler = serverless(app)
 * This will cost more over time with additional ms runtime because of express overhead
 * This introduces the idea that monoliths can work in lambda functions and this is considered an anti pattern
 
-## auth decorators
+## Auth decorators
 
 Similar to auth middleware, decorators wrap the function code and return another function
 
 Some developers prefer this more explicit approach as opposed to middleware
 
-Code here
+```js
+@AuthDecorator // <-- ref to auth wrapper function
+function protectedFunction(event, context, callback) {
+  // protected logic
+}
+```
 
 ## Custom authorizers
 
