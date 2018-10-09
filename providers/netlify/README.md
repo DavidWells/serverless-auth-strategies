@@ -1,1 +1,0 @@
-# Netlify identity + Protected Functions
